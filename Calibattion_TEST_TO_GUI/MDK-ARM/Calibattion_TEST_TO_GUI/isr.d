@@ -43,4 +43,4 @@ calibattion_test_to_gui/isr.o: ..\Core\Src\ISR.c ..\Core\Inc\main.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   ..\Core\Inc\FLASH_SECTOR_F4.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\math.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\ctype.h
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\ctype.h ..\Core\Inc\ADXL.h

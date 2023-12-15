@@ -23,7 +23,8 @@
 #define __MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -38,18 +39,19 @@ extern "C" {
 #include "FLASH_SECTOR_F4.h"
 #include "math.h"
 #include <ctype.h>
+#include "ADXL.h"
+  /* Private includes ----------------------------------------------------------*/
+  /* USER CODE BEGIN Includes */
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
- extern UART_HandleTypeDef huart1;
+  /* USER CODE END Includes */
+  extern UART_HandleTypeDef huart1;
   extern UART_HandleTypeDef huart3;
   extern TIM_HandleTypeDef htim10;
   extern TIM_HandleTypeDef htim2;
   extern TIM_HandleTypeDef htim1;
   extern ADC_HandleTypeDef hadc1;
-
+  extern SPI_HandleTypeDef hspi2;
+  extern I2C_HandleTypeDef hi2c1;
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 #define Timer_PRESCALER_VALUE (uint32_t)(((SystemCoreClock) / 45000000) - 1)
@@ -65,17 +67,17 @@ extern "C" {
 
 #define data_size_adc (4)
 
-/* USER CODE END EC */
+  /* USER CODE END EC */
 
-/* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
+  /* Exported macro ------------------------------------------------------------*/
+  /* USER CODE BEGIN EM */
 
-/* USER CODE END EM */
+  /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+  void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
-/* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
+  /* Exported functions prototypes ---------------------------------------------*/
+  void Error_Handler(void);
 /*傳輸buffer 大小配置*/
 #define Uart_Buffer (200)
 /* USER CODE BEGIN EFP */
@@ -136,20 +138,18 @@ void Error_Handler(void);
 /*Search char*/
 #define Target ("W")
 #define Target_Multi ("F")
-#define Wave_len (4) 
+#define Wave_len (4)
 #define TriWave (1)
 #define SineWave (2)
 #define Freq_value_len (6)
 
-
-
   /*條件編譯DEBUG區*/
 
   // #define DEBUG_MODE_FLASH 1
-   #define DEBUG_MODE_UART  1
+// #define DEBUG_MODE_UART 1
   // #define DEBUG_MODE_UART_ADC_Message 1
   //  #define ISR_DISPLAY 1
-// #define TestDac 1
+  // #define TestDac 1
   // #define Debug_Searcg_Element_target 1
 
 #ifdef __cplusplus

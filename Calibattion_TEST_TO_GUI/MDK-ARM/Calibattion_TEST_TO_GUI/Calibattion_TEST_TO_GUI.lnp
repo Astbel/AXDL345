@@ -7,6 +7,7 @@
 "calibattion_test_to_gui\main.o"
 "calibattion_test_to_gui\stm32f4xx_it.o"
 "calibattion_test_to_gui\stm32f4xx_hal_msp.o"
+"calibattion_test_to_gui\adxl.o"
 "calibattion_test_to_gui\stm32f4xx_hal_adc.o"
 "calibattion_test_to_gui\stm32f4xx_hal_adc_ex.o"
 "calibattion_test_to_gui\stm32f4xx_ll_adc.o"

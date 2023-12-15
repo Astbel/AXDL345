@@ -430,6 +430,11 @@
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f4xx_hal_msp.c</FilePath>
             </File>
+            <File>
+              <FileName>ADXL.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\ADXL.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

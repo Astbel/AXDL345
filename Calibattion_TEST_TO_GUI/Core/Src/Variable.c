@@ -33,6 +33,10 @@ uint32_t sawtooth_table[Tri_Resltion];
 uint16_t wave_Freq;
 uint16_t wave_Vpp;
 uint8_t wave_select;
+/*AXDL inital*/
+uint8_t data_rec[6];
+int16_t x, y, z;
+float xg, yg, zg;
 /*
  * 初始化變數變量
  * 請區分 所有結構體 為一組 以利於分辨
@@ -44,9 +48,14 @@ void Initail_Variable(void)
     for (int i = 0; i < 5; i++)
         PFC_Variables.adc_raw[i] = 0;
     // Inital Flash variable
-
-    Protect_12V = 0, Protect_5V = 0;
-
+    for (int i = 0; i < 6; i++)
+        data_rec[i] = 0;
+    x=0;
+    y=0;
+    z=0;
+    xg=0;
+    yg=0;
+    zg=0;
     /*Flash 測試變數使用區*/
 
     /*Flash 宣告變數區*/

@@ -76,6 +76,9 @@ extern uint32_t MAX_DUTY_Calculate;
 extern uint32_t ARR_LAST_TIME_SAVE;
 /*SPWM output*/
 extern uint16_t SPWM_OUT;
-/*********************Slope method**********************/
+/*********************AXDL**********************/
+extern uint8_t data_rec[6];
+extern int16_t x,y,z;
+extern float xg, yg, zg;
 
 #endif

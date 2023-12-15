@@ -5,7 +5,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (htim == &htim10)
     {
-      
+      adxl_send_data_parsing_pc();
+
+    //   Uart_sendstring("Test",pc_uart);
     }
 }
 
