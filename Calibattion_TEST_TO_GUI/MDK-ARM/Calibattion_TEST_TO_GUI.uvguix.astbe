@@ -3687,9 +3687,9 @@
       </Doc>
       <Doc>
         <Name>..\Core\Src\ADXL.c</Name>
-        <ColumnNumber>1</ColumnNumber>
+        <ColumnNumber>92</ColumnNumber>
         <TopLine>1</TopLine>
-        <CurrentLine>17</CurrentLine>
+        <CurrentLine>21</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>

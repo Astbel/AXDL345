@@ -142,7 +142,7 @@ extern "C"
 #define TriWave (1)
 #define SineWave (2)
 #define Freq_value_len (6)
-
+#define M_PI		(3.14159265358979323846)
   /*條件編譯DEBUG區*/
 
   // #define DEBUG_MODE_FLASH 1

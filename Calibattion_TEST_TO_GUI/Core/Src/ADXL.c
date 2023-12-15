@@ -41,12 +41,22 @@ void adxl_send_data_parsing_pc(void)
     y = ((data_rec[3] << 8) | data_rec[2]);
     z = ((data_rec[5] << 8) | data_rec[4]);
 
-    // Convert into 'g'
+    // Convert into 'g'的 0.0078 g/LSB
 
     xg = x * .0078;
     yg = y * .0078;
     zg = z * .0078;
     /*send Var to PC*/
-    sprintf(buffer, "X= %0.4f,Y= %0.4f,Z=%0.4f", xg, yg, zg);
+    // sprintf(buffer, "X= %0.4f,Y= %0.4f,Z=%0.4f", xg, yg, zg);
+
+    /*轉換成角度和弧度*/
+    /*Pitch Angle 相對於地面水平的前後傾斜角度 */
+    /*Roll Angle 相對於地面水平的左右傾斜角度 */
+    float pitch = atan2(-xg, sqrt(yg * yg + zg * zg));
+    float roll = atan2(yg, sqrt(xg * xg + zg * zg));
+
+    float pitch_deg = pitch * (180.0 / M_PI);
+    float roll_deg = roll * (180.0 / M_PI);
+    sprintf(buffer, "Pitch_Deg= %0.4f,Roll_Deg= %0.4f", pitch_deg,roll_deg);
     Uart_sendstring(buffer, pc_uart);
 }
