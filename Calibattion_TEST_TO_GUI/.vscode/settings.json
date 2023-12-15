@@ -1,0 +1,14 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "uartringbuffer_multi.h": "c",
+        "main.h": "c",
+        "function.h": "c",
+        "variable.h": "c",
+        "string.h": "c",
+        "stm32f4xx_hal_dac.h": "c",
+        "stm32f4xx_hal.h": "c",
+        "math.h": "c",
+        "flash_sector_f4.h": "c"
+    }
+}
