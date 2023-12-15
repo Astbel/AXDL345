@@ -44,20 +44,20 @@ extern "C"
   /* USER CODE BEGIN Includes */
 
   /* USER CODE END Includes */
-  extern UART_HandleTypeDef huart2;
+  extern UART_HandleTypeDef huart1;
   extern UART_HandleTypeDef huart3;
   extern TIM_HandleTypeDef htim10;
   extern TIM_HandleTypeDef htim2;
   extern TIM_HandleTypeDef htim1;
   extern ADC_HandleTypeDef hadc1;
   extern FLASH_EraseInitTypeDef flashstruct;
-  extern DAC_HandleTypeDef hdac;
+ 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 #define Timer_PRESCALER_VALUE (uint32_t)(((SystemCoreClock) / 45000000) - 1)
 #define Timer_PERIOD_VALUE (uint32_t)(10500 - 1) /* Period Value  */
 /* USER CODE END ET */
-#define device_uart &huart2
+#define device_uart &huart1
 #define pc_uart &huart3
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
@@ -189,7 +189,7 @@ extern "C"
    #define DEBUG_MODE_UART  1
   // #define DEBUG_MODE_UART_ADC_Message 1
   //  #define ISR_DISPLAY 1
-#define TestDac 1
+// #define TestDac 1
   // #define Debug_Searcg_Element_target 1
   
 

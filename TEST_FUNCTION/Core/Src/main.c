@@ -95,7 +95,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  MX_SPI1_Init();
+  // MX_SPI1_Init();
   MX_TIM10_Init();
   MX_USART3_UART_Init();
   Ringbuf_init();
@@ -106,10 +106,10 @@ int main(void)
   while (1)
   {
 #ifdef DEBUG_MODE_UART
-    if (IsDataAvailable(pc_uart))
+    if (IsDataAvailable(device_uart))
     {
-      int data = Uart_read(pc_uart);
-      Uart_write(data, pc_uart);
+      int data = Uart_read(device_uart);
+      Uart_write(data, device_uart);
     }
 #endif
 
