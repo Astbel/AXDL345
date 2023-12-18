@@ -46,34 +46,98 @@ void adxl_send_data_parsing_pc(void)
     yg = y * .0078;
     zg = z * .0078;
     /*send Var to PC*/
-    // sprintf(buffer, "X= %0.4f,Y= %0.4f,Z=%0.4f", xg, yg, zg);
+    
+    #ifdef TwoD_Method
+        Two_Dimensions_XY_Coorditiration(&xg,&yg,&zg);
+    #endif
 
-    /*轉換成角度和弧度*/
-    /*Pitch Angle 相對於地面水平的前後傾斜角度 */
-    /*Roll Angle 相對於地面水平的左右傾斜角度 */
-    float pitch = atan2(-xg, sqrt(yg * yg + zg * zg));
-    float roll = atan2(yg, sqrt(xg * xg + zg * zg));
+    #ifdef ThreeD_Method
+        Three_Dimensions_XYZ_Coorditiration(&xg,&yg,&zg);
+    #endif
 
-    float pitch_deg = pitch * (180.0 / M_PI);  
-    float roll_deg = roll * (180.0 / M_PI);    
-
-    // Assuming pitch and roll are in degrees 轉換為2D XY直角坐標系
-    float xy_angle = atan2(tan(roll * M_PI / 180), tan(pitch * M_PI / 180)) * 180 / M_PI;
-    //輸出X Y 矢量 以及角度
-    sprintf(buffer, "X= %0.2f,Y= %0.2f,Ang=%0.2f", xg, yg, xy_angle);
-    /*計算水平 垂直軸*/
-    // sprintf(buffer, "Pitch_Deg= %0.2f,Roll_Deg= %0.2f", pitch_deg,roll_deg);
-
-    // float x_Vector = atan2(xg, sqrt(pow(yg, 2) + pow(zg, 2)));
-    // float y_Vector = atan2(yg, sqrt(pow(xg, 2) + pow(zg, 2)));
-    // float z_Vector = atan2(sqrt(pow(xg, 2) + pow(yg, 2)), zg);
-
-    // float x_Degree = x_Vector * (180.0 / M_PI);
-    // float y_Degree = y_Vector * (180.0 / M_PI);
-    // float z_Degree = z_Vector * (180.0 / M_PI);
-
-    /*各向角計算*/
-    // sprintf(buffer, "X_Deg= %0.2f,Y_Deg= %0.2f,Z_Deg=%0.2f", x_Degree, y_Degree, z_Degree);
-
-    Uart_sendstring(buffer, pc_uart);
 }
+
+/**
+ * @brief 3D坐標系轉換為直角坐標系
+ *
+ * @param x 水平
+ * @param y 垂直
+ * @param z 旋轉
+ */
+void Two_Dimensions_XY_Coorditiration(float *x, float *y, float *z)
+{
+    /* Uart Buffer */
+    char buffer[Uart_Buffer];
+
+    // Calculate pitch and roll using the values pointed by x, y, and z
+    float pitch = atan2(-(*x), sqrt((*y) * (*y) + (*z) * (*z)));
+    float roll = atan2((*y), sqrt((*x) * (*x) + (*z) * (*z)));
+
+    // Convert pitch and roll to degrees
+    float pitch_deg = pitch * (180.0 / M_PI);
+    float roll_deg = roll * (180.0 / M_PI);
+
+    // Calculate xy_angle
+    float xy_angle = atan2(tan(roll * M_PI / 180), tan(pitch * M_PI / 180)) * 180 / M_PI;
+
+    // Use *x, *y, and xy_angle in sprintf
+    sprintf(buffer, "X= %0.2f, Y= %0.2f, Ang= %0.2f", *x, *y, xy_angle);
+    Uart_sendstring(buffer, pc_uart);
+    /*PTR Function 指向並且判斷是否執行method*/
+    if (Enable_Function(&xy_angle)==True)
+    {
+        /* Excute function */
+    }
+
+}
+
+/**
+ * @brief 3D座標系下判定90度旋轉Z軸
+ *
+ * @param x 水平
+ * @param y 垂直
+ * @param z 旋轉
+ */
+void Three_Dimensions_XYZ_Coorditiration(float *x, float *y, float *z)
+{
+    
+    /* Uart Buffer */
+    char buffer[Uart_Buffer];
+    /*三維矢量計算*/
+    float x_Vector = atan2(-(*x), sqrt((*y) * (*y) + (*z) * (*z)));
+    float y_Vector = atan2((*y), sqrt((*x) * (*x) + (*z) * (*z)));
+    float z_Vector = atan2(sqrt(pow((*x), 2) + pow((*y), 2)), (*z));
+    /*XYZ三軸向角計算*/
+    float x_Degree = x_Vector * (180.0 / M_PI);
+    float y_Degree = y_Vector * (180.0 / M_PI);
+    float z_Degree = z_Vector * (180.0 / M_PI);
+    /*Uart 打印個個維度角度*/
+    sprintf(buffer, "X_Deg= %0.2f,Y_Deg= %0.2f,Z_Deg=%0.2f", x_Degree, y_Degree, z_Degree);
+    Uart_sendstring(buffer, pc_uart);
+    
+    if (Enable_Function(&y_Degree)==True)
+    {
+        /* Excute function */
+    }
+    
+
+}
+/**
+ * @brief 判斷角度是否到達目標智能功能
+ * 
+ * @param degree 
+ */
+uint8_t Enable_Function(float *degree)
+{
+    if(((*degree)>89) && ((*degree)<91))
+        enable_flag =True;
+    else
+        enable_flag=False;
+}
+
+
+
+
+
+
+

@@ -151,6 +151,8 @@ extern "C"
   //  #define ISR_DISPLAY 1
   // #define TestDac 1
   // #define Debug_Searcg_Element_target 1
+  // #define TwoD_Method  1
+  #define  ThreeD_Method  1
 
 #ifdef __cplusplus
 }

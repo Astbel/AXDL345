@@ -23,6 +23,8 @@ extern uint16_t mointer_Freq;
 extern float mointer_Duty;
 extern uint8_t mointer_Enable;
 extern uint8_t dac_flag;
+/*********************Boolean*************************/
+extern uint8_t enable_flag;
 /********************STRUCT***************************/
 struct PFC_VARIABLES
 {
@@ -80,5 +82,6 @@ extern uint16_t SPWM_OUT;
 extern uint8_t data_rec[6];
 extern int16_t x,y,z;
 extern float xg, yg, zg;
+
 
 #endif

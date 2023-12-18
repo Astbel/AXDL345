@@ -37,6 +37,7 @@ uint8_t wave_select;
 uint8_t data_rec[6];
 int16_t x, y, z;
 float xg, yg, zg;
+uint8_t enable_flag;
 /*
  * 初始化變數變量
  * 請區分 所有結構體 為一組 以利於分辨
