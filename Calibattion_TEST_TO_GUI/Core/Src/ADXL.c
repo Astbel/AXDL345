@@ -41,8 +41,7 @@ void adxl_send_data_parsing_pc(void)
     y = ((data_rec[3] << 8) | data_rec[2]);
     z = ((data_rec[5] << 8) | data_rec[4]);
 
-    // Convert into 'g'的 0.0078 g/LSB
-
+    // Convert into 'g'的 0.0078 g/LSB 這裡其實就是三軸向量
     xg = x * .0078;
     yg = y * .0078;
     zg = z * .0078;
@@ -55,8 +54,26 @@ void adxl_send_data_parsing_pc(void)
     float pitch = atan2(-xg, sqrt(yg * yg + zg * zg));
     float roll = atan2(yg, sqrt(xg * xg + zg * zg));
 
-    float pitch_deg = pitch * (180.0 / M_PI);
-    float roll_deg = roll * (180.0 / M_PI);
-    sprintf(buffer, "Pitch_Deg= %0.4f,Roll_Deg= %0.4f", pitch_deg,roll_deg);
+    float pitch_deg = pitch * (180.0 / M_PI);  
+    float roll_deg = roll * (180.0 / M_PI);    
+
+    // Assuming pitch and roll are in degrees 轉換為2D XY直角坐標系
+    float xy_angle = atan2(tan(roll * M_PI / 180), tan(pitch * M_PI / 180)) * 180 / M_PI;
+    //輸出X Y 矢量 以及角度
+    sprintf(buffer, "X= %0.2f,Y= %0.2f,Ang=%0.2f", xg, yg, xy_angle);
+    /*計算水平 垂直軸*/
+    // sprintf(buffer, "Pitch_Deg= %0.2f,Roll_Deg= %0.2f", pitch_deg,roll_deg);
+
+    // float x_Vector = atan2(xg, sqrt(pow(yg, 2) + pow(zg, 2)));
+    // float y_Vector = atan2(yg, sqrt(pow(xg, 2) + pow(zg, 2)));
+    // float z_Vector = atan2(sqrt(pow(xg, 2) + pow(yg, 2)), zg);
+
+    // float x_Degree = x_Vector * (180.0 / M_PI);
+    // float y_Degree = y_Vector * (180.0 / M_PI);
+    // float z_Degree = z_Vector * (180.0 / M_PI);
+
+    /*各向角計算*/
+    // sprintf(buffer, "X_Deg= %0.2f,Y_Deg= %0.2f,Z_Deg=%0.2f", x_Degree, y_Degree, z_Degree);
+
     Uart_sendstring(buffer, pc_uart);
 }
