@@ -1,4 +1,5 @@
-calibattion_test_to_gui/adc.o: ..\Core\Src\ADC.c ..\Core\Inc\main.h \
+calibattion_test_to_gui/rotary.o: ..\Core\Src\Rotary.c \
+  ..\Core\Inc\Rotary.h ..\Core\Inc\main.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
   ..\Core\Inc\stm32f4xx_hal_conf.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h \
@@ -43,5 +44,4 @@ calibattion_test_to_gui/adc.o: ..\Core\Src\ADC.c ..\Core\Inc\main.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   ..\Core\Inc\FLASH_SECTOR_F4.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\math.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\ctype.h ..\Core\Inc\ADXL.h \
-  ..\Core\Inc\Rotary.h
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\ctype.h ..\Core\Inc\ADXL.h

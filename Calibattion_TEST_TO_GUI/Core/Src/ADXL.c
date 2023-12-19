@@ -46,15 +46,14 @@ void adxl_send_data_parsing_pc(void)
     yg = y * .0078;
     zg = z * .0078;
     /*send Var to PC*/
-    
-    #ifdef TwoD_Method
-        Two_Dimensions_XY_Coorditiration(&xg,&yg,&zg);
-    #endif
 
-    #ifdef ThreeD_Method
-        Three_Dimensions_XYZ_Coorditiration(&xg,&yg,&zg);
-    #endif
+#ifdef TwoD_Method
+    Two_Dimensions_XY_Coorditiration(&xg, &yg, &zg);
+#endif
 
+#ifdef ThreeD_Method
+    Three_Dimensions_XYZ_Coorditiration(&xg, &yg, &zg);
+#endif
 }
 
 /**
@@ -84,11 +83,10 @@ void Two_Dimensions_XY_Coorditiration(float *x, float *y, float *z)
     sprintf(buffer, "X= %0.2f, Y= %0.2f, Ang= %0.2f", *x, *y, xy_angle);
     Uart_sendstring(buffer, pc_uart);
     /*PTR Function 指向並且判斷是否執行method*/
-    if (Enable_Function(&xy_angle)==True)
+    if (Enable_Function(&xy_angle) == True)
     {
         /* Excute function */
     }
-
 }
 
 /**
@@ -100,7 +98,7 @@ void Two_Dimensions_XY_Coorditiration(float *x, float *y, float *z)
  */
 void Three_Dimensions_XYZ_Coorditiration(float *x, float *y, float *z)
 {
-    
+
     /* Uart Buffer */
     char buffer[Uart_Buffer];
     /*三維矢量計算*/
@@ -114,28 +112,24 @@ void Three_Dimensions_XYZ_Coorditiration(float *x, float *y, float *z)
     /*Uart 打印個個維度角度*/
     sprintf(buffer, "X_Deg= %0.2f,Y_Deg= %0.2f,Z_Deg=%0.2f", x_Degree, y_Degree, z_Degree);
     Uart_sendstring(buffer, pc_uart);
-    
-    if (Enable_Function(&y_Degree)==True)
+
+    if (Enable_Function(&y_Degree) == True)
     {
         /* Excute function */
     }
-    
-
 }
 /**
  * @brief 判斷角度是否到達目標智能功能
- * 
- * @param degree 
+ *
+ * @param degree
  */
 uint8_t Enable_Function(float *degree)
 {
-    if(((*degree)>89) && ((*degree)<91))
-        enable_flag =True;
+    if (((*degree) > 89) && ((*degree) < 91))
+        enable_flag = True;
     else
-        enable_flag=False;
+        enable_flag = False;
 }
-
-
 
 
 

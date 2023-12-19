@@ -32,5 +32,7 @@ extern void Display_message_on_gui(void);
 /*波型事件*/
 
 extern void RemoveSubstringAndProcess(const char* target, size_t start_pos, uint16_t* wave_value);
+/*旋轉編碼器*/
+extern void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDef *GPIOxB, uint16_t GPIO_PinB);
 
 #endif

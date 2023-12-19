@@ -40,6 +40,7 @@ extern "C"
 #include "math.h"
 #include <ctype.h>
 #include "ADXL.h"
+#include "Rotary.h"
   /* Private includes ----------------------------------------------------------*/
   /* USER CODE BEGIN Includes */
 
