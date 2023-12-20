@@ -156,6 +156,7 @@ extern "C"
     // #define Display_XYZ_Coorditiration 1
  // #define Display_XY_Coorditiration 1
 //  #define TwoD_Method  1
+    // #define View_initail 1
 #define  ThreeD_Method  1
 
 #ifdef __cplusplus

@@ -17,18 +17,56 @@ void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDef *GPIO
   uint8_t phaseA = HAL_GPIO_ReadPin(GPIOxA, GPIO_PinA);
   uint8_t phaseB = HAL_GPIO_ReadPin(GPIOxB, GPIO_PinB);
   int result = Pin_process(phaseA, phaseB);
-   static int16_t count;
-   /*順時針*/
-  if(result==DIR_CW)
-  {
-     count++;
-     /*檢查角度如果角度正確則執行*/
-  }
+  static int16_t count;
+  /*順時針*/
+  if (result == DIR_CW)
+    count++;
+
   /*逆時針*/
-  else if (result==DIR_CCW)
+  else if (result == DIR_CCW)
+    count--;
+
+  /*角度計算*/
+  Vector_Space.degree =count;
+  /*加上當前矢量*/
+  Vector_Space.y_Degree +=Vector_Space.degree;
+  /*檢測角度是否開啟夜視鏡*/
+  if (Enable_Function(&Vector_Space.y_Degree) == True)
   {
-     count--;
-    /*檢查角度如果角度正確則執行*/
+    Event_Execute();
   }
-  
+}
+
+void Get_Vector_Degree_Init(void)
+{
+/*Uart buffer*/
+#ifdef View_initail
+  char buffer[Uart_Buffer];
+#endif
+  /*取得使量位置*/
+  adxl_read(0x32);
+  x = ((data_rec[1] << 8) | data_rec[0]);
+  y = ((data_rec[3] << 8) | data_rec[2]);
+  z = ((data_rec[5] << 8) | data_rec[4]);
+
+  // Convert into 'g'的 0.0078 g/LSB 這裡其實就是三軸向量
+  xg = x * .0078;
+  yg = y * .0078;
+  zg = z * .0078;
+
+  /*計算矢量*/
+  Vector_Space.x_Vector = atan2(-xg, sqrt(yg * yg + zg * zg));
+  Vector_Space.y_Vector = atan2(-yg, sqrt(xg * xg + zg * zg));
+  Vector_Space.z_Vector = atan2(sqrt(pow(xg, 2) + pow(yg, 2)), zg);
+
+  /*XYZ三軸向角計算*/
+  Vector_Space.x_Degree = Vector_Space.x_Vector * (180.0 / M_PI);
+  Vector_Space.y_Degree = Vector_Space.y_Vector * (180.0 / M_PI);
+  Vector_Space.z_Degree = Vector_Space.z_Vector * (180.0 / M_PI);
+
+#ifdef View_initail
+  /*Uart 打印個個維度角度*/
+  sprintf(buffer, "X_Deg= %0.2f,Y_Deg= %0.2f,Z_Deg=%0.2f", x_Degree, y_Degree, z_Degree);
+  Uart_sendstring(buffer, pc_uart);
+#endif
 }

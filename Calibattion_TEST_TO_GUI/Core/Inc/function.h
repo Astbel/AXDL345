@@ -27,10 +27,8 @@ extern void PWM_Duty_Freq_Change(void);
 extern void PWM_Duty_Freq_Dual_Channel(void);
 extern void Display_message_on_gui(void);
 
-/*Tri 三角波測試*/
-
-/*波型事件*/
-
+/*初始向量計算*/
+extern void Get_Vector_Degree_Init(void);
 extern void RemoveSubstringAndProcess(const char* target, size_t start_pos, uint16_t* wave_value);
 /*旋轉編碼器*/
 extern void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDef *GPIOxB, uint16_t GPIO_PinB);

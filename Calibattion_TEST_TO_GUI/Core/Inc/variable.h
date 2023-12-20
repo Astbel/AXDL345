@@ -7,6 +7,7 @@
 extern struct PFC_VARIABLES PFC_Variables;
 extern struct Allert_Portect Dyanmic_Portect;
 extern struct Flash_Dynamic Flash_Memory;
+extern struct Vector_Space  Vector_Space;
 /*********************WaveFrom*****************************/
 extern uint16_t wave_Freq;
 extern uint16_t wave_Vpp;
@@ -83,5 +84,19 @@ extern uint8_t data_rec[6];
 extern int16_t x,y,z;
 extern float xg, yg, zg;
 
+struct Vector_Space
+{
+    float x_Vector;
+    float y_Vector;
+    float z_Vector;
+    float x_Degree;
+    float y_Degree;
+    float z_Degree;
+    int degree;
+};
 
+
+
+/****************Rotary Encoder*********************/
+extern float degree;
 #endif

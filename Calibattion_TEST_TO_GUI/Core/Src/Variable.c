@@ -1,7 +1,7 @@
 #include "main.h"
 struct PFC_VARIABLES PFC_Variables;
 struct Allert_Portect Dyanmic_Portect;
-
+struct Vector_Space  Vector_Space;
 // 申明變數
 uint32_t Protect_12V, Protect_5V;
 /*控制PWM 變數*/
@@ -57,7 +57,5 @@ void Initail_Variable(void)
     xg=0;
     yg=0;
     zg=0;
-    /*Flash 測試變數使用區*/
-
-    /*Flash 宣告變數區*/
+   
 }
