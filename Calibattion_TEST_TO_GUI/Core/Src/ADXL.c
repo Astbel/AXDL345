@@ -65,23 +65,28 @@ void adxl_send_data_parsing_pc(void)
  */
 void Two_Dimensions_XY_Coorditiration(float *x, float *y, float *z)
 {
+    #ifdef Display_XY_Coorditiration
     /* Uart Buffer */
     char buffer[Uart_Buffer];
+    #endif
 
     // Calculate pitch and roll using the values pointed by x, y, and z
-    float pitch = atan2(-(*x), sqrt((*y) * (*y) + (*z) * (*z)));
-    float roll = atan2((*y), sqrt((*x) * (*x) + (*z) * (*z)));
+    float x_Vector = atan2(-(*x), sqrt((*y) * (*y) + (*z) * (*z)));
+    float y_Vector = atan2(-(*y), sqrt((*x) * (*x) + (*z) * (*z)));
 
     // Convert pitch and roll to degrees
-    float pitch_deg = pitch * (180.0 / M_PI);
-    float roll_deg = roll * (180.0 / M_PI);
+    float x_Degree = x_Vector * (180.0 / M_PI);
+    float y_Degree = y_Vector * (180.0 / M_PI);
 
     // Calculate xy_angle
-    float xy_angle = atan2(tan(roll * M_PI / 180), tan(pitch * M_PI / 180)) * 180 / M_PI;
+    float xy_angle = atan2(tan(x_Degree * M_PI / 180), tan(y_Degree * M_PI / 180)) * 180 / M_PI;
 
+    #ifdef Display_XY_Coorditiration
     // Use *x, *y, and xy_angle in sprintf
     sprintf(buffer, "X= %0.2f, Y= %0.2f, Ang= %0.2f", *x, *y, xy_angle);
     Uart_sendstring(buffer, pc_uart);
+    #endif 
+
     /*PTR Function 指向並且判斷是否執行method*/
     if (Enable_Function(&xy_angle) == True)
     {
@@ -100,22 +105,31 @@ void Three_Dimensions_XYZ_Coorditiration(float *x, float *y, float *z)
 {
 
     /* Uart Buffer */
+    #ifdef Display_XYZ_Coorditiration
     char buffer[Uart_Buffer];
+    #endif
+    // char buffer[Uart_Buffer];
+
     /*三維矢量計算*/
     float x_Vector = atan2(-(*x), sqrt((*y) * (*y) + (*z) * (*z)));
-    float y_Vector = atan2((*y), sqrt((*x) * (*x) + (*z) * (*z)));
+    float y_Vector = atan2(-(*y), sqrt((*x) * (*x) + (*z) * (*z)));
     float z_Vector = atan2(sqrt(pow((*x), 2) + pow((*y), 2)), (*z));
     /*XYZ三軸向角計算*/
     float x_Degree = x_Vector * (180.0 / M_PI);
     float y_Degree = y_Vector * (180.0 / M_PI);
     float z_Degree = z_Vector * (180.0 / M_PI);
+
+    #ifdef Display_XYZ_Coorditiration
     /*Uart 打印個個維度角度*/
     sprintf(buffer, "X_Deg= %0.2f,Y_Deg= %0.2f,Z_Deg=%0.2f", x_Degree, y_Degree, z_Degree);
     Uart_sendstring(buffer, pc_uart);
-
+    #endif
+    // sprintf(buffer,"Y_Degree=%0.2f",y_Degree);
+    // Uart_sendstring(buffer, pc_uart);
+    
     if (Enable_Function(&y_Degree) == True)
     {
-        /* Excute function */
+        Event_Execute();
     }
 }
 /**
@@ -125,13 +139,22 @@ void Three_Dimensions_XYZ_Coorditiration(float *x, float *y, float *z)
  */
 uint8_t Enable_Function(float *degree)
 {
-    if (((*degree) > 89) && ((*degree) < 91))
+    if (((*degree) > 87) && ((*degree) < 92))
         enable_flag = True;
     else
         enable_flag = False;
+    return enable_flag;    
 }
 
 
+/**
+ * @brief  90度時執行事件function test
+ * 
+ */
+void Event_Execute(void)
+{
+    Uart_sendstring("Testing Function Angle",pc_uart);
+}
 
 
 
