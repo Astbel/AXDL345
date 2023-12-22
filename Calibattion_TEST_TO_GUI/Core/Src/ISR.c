@@ -7,11 +7,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   {
     adxl_send_data_parsing_pc();
 
+    // Rotary_Encoder(GPIOA,GPIO_PIN_11,GPIOA,GPIO_PIN_13);
     //   Uart_sendstring("Test",pc_uart);
   }
 }
 
 /*旋轉編碼器*/
+/*控制亮度*/
 void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDef *GPIOxB, uint16_t GPIO_PinB)
 {
   uint8_t phaseA = HAL_GPIO_ReadPin(GPIOxA, GPIO_PinA);
@@ -26,15 +28,10 @@ void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDef *GPIO
   else if (result == DIR_CCW)
     count--;
 
-  /*角度計算*/
-  Vector_Space.degree =count;
-  /*加上當前矢量*/
-  Vector_Space.y_Degree +=Vector_Space.degree;
-  /*檢測角度是否開啟夜視鏡*/
-  if (Enable_Function(&Vector_Space.y_Degree) == True)
-  {
-    Event_Execute();
-  }
+  /*Duty計算*/
+  Vector_Space.modula_duty = count * PWM_Resloution;
+  /*調變控制亮度*/
+  Control_Lighting(&Vector_Space.modula_duty);
 }
 
 void Get_Vector_Degree_Init(void)
@@ -69,4 +66,23 @@ void Get_Vector_Degree_Init(void)
   sprintf(buffer, "X_Deg= %0.2f,Y_Deg= %0.2f,Z_Deg=%0.2f", x_Degree, y_Degree, z_Degree);
   Uart_sendstring(buffer, pc_uart);
 #endif
+  /*Status Check*/
+}
+
+/**
+ * @brief 
+ * default配置PWM Duty為
+ * @param duty_compare 調變亮度
+ */
+void Control_Lighting(int *duty_compare)
+{
+  /*初始duty未配置*/
+  Pwm_out =((Initail_Duty * TIM1->ARR) / MAX_DUTY_percentage)+*duty_compare;
+
+  /*限制Duty*/
+  if (Pwm_out > MAX_DUTY)
+     Pwm_out = MAX_DUTY;
+  if (Pwm_out < Min_DUTY)
+    Pwm_out = Min_DUTY;
+  TIM1->CCR1 = Pwm_out;
 }

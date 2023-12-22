@@ -34,4 +34,5 @@ extern void RemoveSubstringAndProcess(const char* target, size_t start_pos, uint
 extern void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDef *GPIOxB, uint16_t GPIO_PinB);
 /*向角判斷執行*/
 extern void Event_Execute(void);
+extern void Control_Lighting(int *duty_compare);
 #endif

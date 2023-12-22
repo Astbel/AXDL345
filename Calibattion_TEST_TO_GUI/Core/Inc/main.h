@@ -122,8 +122,10 @@ extern "C"
 #define PULSE4_VALUE (uint32_t)(1000 * 12.5 / 100) /* Capture Compare 4 Value  */
 /*PWM DUTY*/
 #define MAX_DUTY (0x03E8)
+#define Min_DUTY (0x0000)
 #define MAX_DUTY_percentage (0x0064)
 #define PWM_offset (0x032)
+#define PWM_Resloution (0x02)
 #define Freq_Gain (1000)
 /*SineWave OffSET for negative side*/
 #define SINE_PWM_OFFSET (1000)

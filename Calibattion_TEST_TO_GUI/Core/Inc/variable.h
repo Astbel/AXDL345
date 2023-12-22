@@ -93,10 +93,11 @@ struct Vector_Space
     float y_Degree;
     float z_Degree;
     int degree;
+    int modula_duty;
 };
 
-
-
+extern uint16_t Initail_Duty;
+extern uint16_t Pwm_out;
 /****************Rotary Encoder*********************/
 extern float degree;
 #endif

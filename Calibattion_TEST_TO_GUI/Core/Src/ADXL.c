@@ -154,6 +154,7 @@ uint8_t Enable_Function(float *degree)
 void Event_Execute(void)
 {
     Uart_sendstring("Testing Function Angle",pc_uart);
+    
 }
 
 
