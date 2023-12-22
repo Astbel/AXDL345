@@ -23,8 +23,7 @@
 #define __MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -41,10 +40,10 @@ extern "C"
 #include <ctype.h>
 #include "ADXL.h"
 #include "Rotary.h"
-  /* Private includes ----------------------------------------------------------*/
-  /* USER CODE BEGIN Includes */
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 
-  /* USER CODE END Includes */
+/* USER CODE END Includes */
   extern UART_HandleTypeDef huart1;
   extern UART_HandleTypeDef huart3;
   extern TIM_HandleTypeDef htim10;
@@ -68,18 +67,17 @@ extern "C"
 
 #define data_size_adc (4)
 
-  /* USER CODE END EC */
+/* USER CODE END EC */
 
-  /* Exported macro ------------------------------------------------------------*/
-  /* USER CODE BEGIN EM */
+/* Exported macro ------------------------------------------------------------*/
+/* USER CODE BEGIN EM */
 
-  /* USER CODE END EM */
+/* USER CODE END EM */
 
-  void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
-  /* Exported functions prototypes ---------------------------------------------*/
-  void Error_Handler(void);
-/*傳輸buffer 大小配置*/
+/* Exported functions prototypes ---------------------------------------------*/
+void Error_Handler(void);
 #define Uart_Buffer (200)
 /* USER CODE BEGIN EFP */
 /*Boolean define*/
@@ -102,6 +100,10 @@ extern "C"
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3
 #define USART_RX_GPIO_Port GPIOA
+#define Rotary_CLK_Pin GPIO_PIN_5
+#define Rotary_CLK_GPIO_Port GPIOA
+#define Rotary_DT_Pin GPIO_PIN_6
+#define Rotary_DT_GPIO_Port GPIOA
 #define CS_PIN_Pin GPIO_PIN_8
 #define CS_PIN_GPIO_Port GPIOC
 #define TMS_Pin GPIO_PIN_13
@@ -110,6 +112,8 @@ extern "C"
 #define TCK_GPIO_Port GPIOA
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
+#define GPIO_EN_Pin GPIO_PIN_5
+#define GPIO_EN_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

@@ -7,7 +7,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   {
     adxl_send_data_parsing_pc();
 
-    // Rotary_Encoder(GPIOA,GPIO_PIN_11,GPIOA,GPIO_PIN_13);
+    Rotary_Encoder(GPIOA,GPIO_PIN_11,GPIOA,GPIO_PIN_13);
     //   Uart_sendstring("Test",pc_uart);
   }
 }

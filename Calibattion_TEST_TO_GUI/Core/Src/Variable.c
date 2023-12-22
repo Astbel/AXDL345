@@ -59,5 +59,5 @@ void Initail_Variable(void)
     xg=0;
     yg=0;
     zg=0;
-   
+   Initail_Duty=10;
 }
