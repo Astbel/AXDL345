@@ -35,4 +35,5 @@ extern void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDe
 /*向角判斷執行*/
 extern void Event_Execute(void);
 extern void Control_Lighting(int *duty_compare);
+extern void Print_Function(void);
 #endif

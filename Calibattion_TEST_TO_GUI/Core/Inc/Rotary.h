@@ -22,7 +22,7 @@
 #define R_START 0x0
 
 unsigned char Pin_process(unsigned int , unsigned int );
-
+unsigned char Rotary_Status(uint8_t Phase_A, uint8_t Phase_B);
 
 #endif
  

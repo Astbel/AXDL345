@@ -6,8 +6,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if (htim == &htim10)
   {
     // adxl_send_data_parsing_pc();
-
-    Rotary_Encoder(GPIOA,Rotary_CLK_Pin,GPIOA,Rotary_DT_Pin);
+   Print_Function();
+    // Rotary_Encoder(GPIOA,Rotary_CLK_Pin,GPIOA,Rotary_DT_Pin);
     //   Uart_sendstring("Test",pc_uart);
   }
 }
@@ -16,21 +16,22 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 /*控制亮度*/
 void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDef *GPIOxB, uint16_t GPIO_PinB)
 {
-   phaseA = HAL_GPIO_ReadPin(GPIOxA, GPIO_PinA);
-   phaseB = HAL_GPIO_ReadPin(GPIOxB, GPIO_PinB);
-  obser_result = Pin_process(phaseA, phaseB);
+  phaseA = HAL_GPIO_ReadPin(GPIOxA, GPIO_PinA);
+  phaseB = HAL_GPIO_ReadPin(GPIOxB, GPIO_PinB);
+  // obser_result = Pin_process(phaseA, phaseB);
+  obser_result = Rotary_Status(phaseA, phaseB);
   static int16_t count;
   /*順時針*/
   if (obser_result == DIR_CW)
     // count++;
-      obser_cout++;
+    obser_cout++;
   /*逆時針*/
   else if (obser_result == DIR_CCW)
     // count--;
-       obser_cout--;
+    obser_cout--;
   /*Duty計算*/
   // Vector_Space.modula_duty = count * PWM_Resloution;
-   Vector_Space.modula_duty = obser_cout * PWM_Resloution;
+  Vector_Space.modula_duty = obser_cout * PWM_Resloution;
   /*調變控制亮度*/
   Control_Lighting(&Vector_Space.modula_duty);
 }
@@ -71,19 +72,31 @@ void Get_Vector_Degree_Init(void)
 }
 
 /**
- * @brief 
+ * @brief
  * default配置PWM Duty為
  * @param duty_compare 調變亮度
  */
 void Control_Lighting(int *duty_compare)
 {
   /*初始duty未配置*/
-  Pwm_out =((Initail_Duty * TIM1->ARR) / MAX_DUTY_percentage)+*duty_compare;
+  Pwm_out = ((Initail_Duty * TIM1->ARR) / MAX_DUTY_percentage) + *duty_compare;
 
   /*限制Duty*/
   if (Pwm_out > MAX_DUTY)
-     Pwm_out = MAX_DUTY;
+    Pwm_out = MAX_DUTY;
   if (Pwm_out < Min_DUTY)
     Pwm_out = Min_DUTY;
   TIM1->CCR1 = Pwm_out;
+}
+
+/*測試打印旋轉編碼器*/
+void Print_Function(void)
+{
+  char buffer[Uart_Buffer];
+  uint16_t data;
+  data=TIM2->CNT;
+
+  sprintf(buffer, "Rotary Encoder is %d", data);
+	Uart_sendstring(buffer, pc_uart);
+
 }

@@ -1,4 +1,4 @@
-/* Rotary encoder handler for C and STM32 
+/* Rotary encoder handler for C and STM32
  *
  * Copyright 2011 Ben Buxton. Licenced under the GNU GPL Version 3.
  * Contact: bb@cactii.net
@@ -69,8 +69,6 @@
  * in that position is the new state to set.
  */
 
-
-
 #ifdef HALF_STEP
 // Use the half-step state table (emits a code at 00 and 11)
 #define R_CCW_BEGIN 0x1
@@ -79,18 +77,18 @@
 #define R_CW_BEGIN_M 0x4
 #define R_CCW_BEGIN_M 0x5
 const unsigned char ttable[6][4] = {
-  // R_START (00)
-  {R_START_M,            R_CW_BEGIN,     R_CCW_BEGIN,  R_START},
-  // R_CCW_BEGIN
-  {R_START_M | DIR_CCW, R_START,        R_CCW_BEGIN,  R_START},
-  // R_CW_BEGIN
-  {R_START_M | DIR_CW,  R_CW_BEGIN,     R_START,      R_START},
-  // R_START_M (11)
-  {R_START_M,            R_CCW_BEGIN_M,  R_CW_BEGIN_M, R_START},
-  // R_CW_BEGIN_M
-  {R_START_M,            R_START_M,      R_CW_BEGIN_M, R_START | DIR_CW},
-  // R_CCW_BEGIN_M
-  {R_START_M,            R_CCW_BEGIN_M,  R_START_M,    R_START | DIR_CCW},
+    // R_START (00)
+    {R_START_M, R_CW_BEGIN, R_CCW_BEGIN, R_START},
+    // R_CCW_BEGIN
+    {R_START_M | DIR_CCW, R_START, R_CCW_BEGIN, R_START},
+    // R_CW_BEGIN
+    {R_START_M | DIR_CW, R_CW_BEGIN, R_START, R_START},
+    // R_START_M (11)
+    {R_START_M, R_CCW_BEGIN_M, R_CW_BEGIN_M, R_START},
+    // R_CW_BEGIN_M
+    {R_START_M, R_START_M, R_CW_BEGIN_M, R_START | DIR_CW},
+    // R_CCW_BEGIN_M
+    {R_START_M, R_CCW_BEGIN_M, R_START_M, R_START | DIR_CCW},
 };
 #else
 
@@ -103,30 +101,73 @@ const unsigned char ttable[6][4] = {
 #define R_CCW_NEXT 0x6
 
 const unsigned char ttable[7][4] = {
-  // R_START
-  {R_START,    R_CW_BEGIN,  R_CCW_BEGIN, R_START},
-  // R_CW_FINAL
-  {R_CW_NEXT,  R_START,     R_CW_FINAL,  R_START | DIR_CW},
-  // R_CW_BEGIN
-  {R_CW_NEXT,  R_CW_BEGIN,  R_START,     R_START},
-  // R_CW_NEXT
-  {R_CW_NEXT,  R_CW_BEGIN,  R_CW_FINAL,  R_START},
-  // R_CCW_BEGIN
-  {R_CCW_NEXT, R_START,     R_CCW_BEGIN, R_START},
-  // R_CCW_FINAL
-  {R_CCW_NEXT, R_CCW_FINAL, R_START,     R_START | DIR_CCW},
-  // R_CCW_NEXT
-  {R_CCW_NEXT, R_CCW_FINAL, R_CCW_BEGIN, R_START},
+    // R_START
+    {R_START, R_CW_BEGIN, R_CCW_BEGIN, R_START},
+    // R_CW_FINAL
+    {R_CW_NEXT, R_START, R_CW_FINAL, R_START | DIR_CW},
+    // R_CW_BEGIN
+    {R_CW_NEXT, R_CW_BEGIN, R_START, R_START},
+    // R_CW_NEXT
+    {R_CW_NEXT, R_CW_BEGIN, R_CW_FINAL, R_START},
+    // R_CCW_BEGIN
+    {R_CCW_NEXT, R_START, R_CCW_BEGIN, R_START},
+    // R_CCW_FINAL
+    {R_CCW_NEXT, R_CCW_FINAL, R_START, R_START | DIR_CCW},
+    // R_CCW_NEXT
+    {R_CCW_NEXT, R_CCW_FINAL, R_CCW_BEGIN, R_START},
 };
 #endif
 
 unsigned int state = R_START;
 
-unsigned char Pin_process(unsigned int _pin1,unsigned int  _pin2) {
+unsigned char Pin_process(unsigned int _pin1, unsigned int _pin2)
+{
   // Grab state of input pins.
   unsigned char pinstate = (_pin2 << 1) | _pin1;
   // Determine new state from the pins and state table.
   state = ttable[state & 0xf][pinstate];
-  // Return emit bits, ie the generated event.
+  // Return emit bits, ie the generated event 0x30 is a bitmask only using for 5&6 bit.
   return state & 0x30;
+}
+
+/**
+ * @brief
+ *
+ * @param Phase_A
+ * @param Phase_B
+ * @return unsigned char
+ */
+unsigned char Rotary_Status(uint8_t Phase_A, uint8_t Phase_B)
+{
+  // 回傳
+  uint16_t result;
+  // 賦值
+  static uint8_t gpio_Phase_A, Last_Status_A;
+  static uint8_t gpio_Phase_B, Last_Status_B;
+  gpio_Phase_A = Phase_A;
+  gpio_Phase_B = Phase_B;
+  // 判別
+  if (((Last_Status_A == 0) && (Last_Status_B == 0)) && ((gpio_Phase_A == 0) && (gpio_Phase_B == 0)))
+    result = DIR_CCW;
+  else if (((Last_Status_A == 0) && (Last_Status_B == 0)) && ((gpio_Phase_A == 1) && (gpio_Phase_B == 0)))
+    result = DIR_CW;
+  else if (((Last_Status_A == 1) && (Last_Status_B == 0)) && ((gpio_Phase_A == 0) && (gpio_Phase_B == 0)))
+    result = DIR_CCW;
+  else if (((Last_Status_A == 1) && (Last_Status_B == 0)) && ((gpio_Phase_A == 1) && (gpio_Phase_B == 1)))
+    result = DIR_CW;
+  else if (((Last_Status_A == 1) && (Last_Status_B == 1)) && ((gpio_Phase_A == 1) && (gpio_Phase_B == 0)))
+    result = DIR_CCW;
+  else if (((Last_Status_A == 1) && (Last_Status_B == 1)) && ((gpio_Phase_A == 0) && (gpio_Phase_B == 1)))
+    result = DIR_CW;
+  else if (((Last_Status_A == 0) && (Last_Status_B == 1)) && ((gpio_Phase_A == 1) && (gpio_Phase_B == 1)))
+    result = DIR_CCW;
+  else if (((Last_Status_A == 0) && (Last_Status_B == 1)) && ((gpio_Phase_A == 0) && (gpio_Phase_B == 0)))
+    result = DIR_CW;
+  else  
+    result =0x00;
+  // 紀錄上一筆
+  Last_Status_A = gpio_Phase_A;
+  Last_Status_B = gpio_Phase_B;
+
+  return result;
 }
