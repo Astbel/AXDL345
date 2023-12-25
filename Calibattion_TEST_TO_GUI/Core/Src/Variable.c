@@ -40,6 +40,11 @@ float xg, yg, zg;
 uint8_t enable_flag;
 uint16_t Initail_Duty;
 uint16_t Pwm_out;
+int16_t obser_cout;
+int8_t obser_result;
+/*Rotary Encoder*/
+uint8_t phaseA;
+uint8_t phaseB;
 /*
  * 初始化變數變量
  * 請區分 所有結構體 為一組 以利於分辨

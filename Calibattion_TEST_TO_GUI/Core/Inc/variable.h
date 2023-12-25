@@ -98,6 +98,10 @@ struct Vector_Space
 
 extern uint16_t Initail_Duty;
 extern uint16_t Pwm_out;
+extern int16_t obser_cout;
+extern int8_t obser_result;
 /****************Rotary Encoder*********************/
 extern float degree;
+extern uint8_t phaseA;
+extern uint8_t phaseB;
 #endif
