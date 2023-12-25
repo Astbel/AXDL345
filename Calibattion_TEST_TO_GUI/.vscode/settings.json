@@ -10,6 +10,7 @@
         "stm32f4xx_hal.h": "c",
         "math.h": "c",
         "flash_sector_f4.h": "c",
-        "adxl.h": "c"
+        "adxl.h": "c",
+        "rotary.h": "c"
     }
 }

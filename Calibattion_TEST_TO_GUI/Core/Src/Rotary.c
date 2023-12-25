@@ -130,44 +130,4 @@ unsigned char Pin_process(unsigned int _pin1, unsigned int _pin2)
   return state & 0x30;
 }
 
-/**
- * @brief
- *
- * @param Phase_A
- * @param Phase_B
- * @return unsigned char
- */
-unsigned char Rotary_Status(uint8_t Phase_A, uint8_t Phase_B)
-{
-  // 回傳
-  uint16_t result;
-  // 賦值
-  static uint8_t gpio_Phase_A, Last_Status_A;
-  static uint8_t gpio_Phase_B, Last_Status_B;
-  gpio_Phase_A = Phase_A;
-  gpio_Phase_B = Phase_B;
-  // 判別
-  if (((Last_Status_A == 0) && (Last_Status_B == 0)) && ((gpio_Phase_A == 0) && (gpio_Phase_B == 0)))
-    result = DIR_CCW;
-  else if (((Last_Status_A == 0) && (Last_Status_B == 0)) && ((gpio_Phase_A == 1) && (gpio_Phase_B == 0)))
-    result = DIR_CW;
-  else if (((Last_Status_A == 1) && (Last_Status_B == 0)) && ((gpio_Phase_A == 0) && (gpio_Phase_B == 0)))
-    result = DIR_CCW;
-  else if (((Last_Status_A == 1) && (Last_Status_B == 0)) && ((gpio_Phase_A == 1) && (gpio_Phase_B == 1)))
-    result = DIR_CW;
-  else if (((Last_Status_A == 1) && (Last_Status_B == 1)) && ((gpio_Phase_A == 1) && (gpio_Phase_B == 0)))
-    result = DIR_CCW;
-  else if (((Last_Status_A == 1) && (Last_Status_B == 1)) && ((gpio_Phase_A == 0) && (gpio_Phase_B == 1)))
-    result = DIR_CW;
-  else if (((Last_Status_A == 0) && (Last_Status_B == 1)) && ((gpio_Phase_A == 1) && (gpio_Phase_B == 1)))
-    result = DIR_CCW;
-  else if (((Last_Status_A == 0) && (Last_Status_B == 1)) && ((gpio_Phase_A == 0) && (gpio_Phase_B == 0)))
-    result = DIR_CW;
-  else  
-    result =0x00;
-  // 紀錄上一筆
-  Last_Status_A = gpio_Phase_A;
-  Last_Status_B = gpio_Phase_B;
 
-  return result;
-}

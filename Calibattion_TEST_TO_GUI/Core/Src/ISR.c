@@ -16,10 +16,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 /*控制亮度*/
 void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDef *GPIOxB, uint16_t GPIO_PinB)
 {
+  char buffer[Uart_Buffer];
+
   phaseA = HAL_GPIO_ReadPin(GPIOxA, GPIO_PinA);
   phaseB = HAL_GPIO_ReadPin(GPIOxB, GPIO_PinB);
-  // obser_result = Pin_process(phaseA, phaseB);
-  obser_result = Rotary_Status(phaseA, phaseB);
+  obser_result = Pin_process(phaseA, phaseB);
   static int16_t count;
   /*順時針*/
   if (obser_result == DIR_CW)
@@ -34,6 +35,9 @@ void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDef *GPIO
   Vector_Space.modula_duty = obser_cout * PWM_Resloution;
   /*調變控制亮度*/
   Control_Lighting(&Vector_Space.modula_duty);
+
+  sprintf(buffer, "Duty is %d", TIM1->CCR1);
+	Uart_sendstring(buffer, pc_uart);
 }
 
 void Get_Vector_Degree_Init(void)
@@ -87,16 +91,18 @@ void Control_Lighting(int *duty_compare)
   if (Pwm_out < Min_DUTY)
     Pwm_out = Min_DUTY;
   TIM1->CCR1 = Pwm_out;
+  mointer_Duty = (float)Pwm_out / MAX_DUTY;
 }
 
 /*測試打印旋轉編碼器*/
 void Print_Function(void)
 {
   char buffer[Uart_Buffer];
-  uint16_t data;
+  int data;
   data=TIM2->CNT;
-
-  sprintf(buffer, "Rotary Encoder is %d", data);
+  Control_Lighting(&data);
+  /*計算百分比*/
+  sprintf(buffer, "Duty is %0.2f", mointer_Duty);
 	Uart_sendstring(buffer, pc_uart);
 
 }
