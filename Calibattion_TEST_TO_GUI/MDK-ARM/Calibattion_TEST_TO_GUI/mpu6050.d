@@ -1,4 +1,4 @@
-calibattion_test_to_gui/variable.o: ..\Core\Src\Variable.c \
+calibattion_test_to_gui/mpu6050.o: ..\Core\Src\MPU6050.c \
   ..\Core\Inc\main.h ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
   ..\Core\Inc\stm32f4xx_hal_conf.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h \

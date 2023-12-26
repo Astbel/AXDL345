@@ -9,6 +9,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     Print_Function();
     // Rotary_Encoder(GPIOA,Rotary_CLK_Pin,GPIOA,Rotary_DT_Pin);
     //   Uart_sendstring("Test",pc_uart);
+    // MPU6050_Read_Accel();
+
+
   }
 }
 

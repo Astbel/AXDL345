@@ -130,6 +130,7 @@ int main(void)
   MX_TIM2_Init();
   Ringbuf_init();
   Initail_Variable();
+  MPU6050_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -555,7 +556,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(CS_PIN_GPIO_Port, CS_PIN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIO_EN_GPIO_Port, GPIO_EN_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIO_EN_GPIO_Port, GPIO_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;

@@ -40,6 +40,8 @@ extern "C" {
 #include <ctype.h>
 #include "ADXL.h"
 #include "Rotary.h"
+#include "MPU6050.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -150,6 +152,12 @@ void Error_Handler(void);
 #define SineWave (2)
 #define Freq_value_len (6)
 #define M_PI		(3.14159265358979323846)
+/*MPU6050*/
+
+
+/*定義開關機*/
+#define Turn_ON  HAL_GPIO_WritePin(GPIO_EN_GPIO_Port, GPIO_EN_Pin, GPIO_PIN_SET);
+#define Turn_OFF HAL_GPIO_WritePin(GPIO_EN_GPIO_Port, GPIO_EN_Pin, GPIO_PIN_RESET);
   /*條件編譯DEBUG區*/
 
   // #define DEBUG_MODE_FLASH 1
@@ -163,6 +171,7 @@ void Error_Handler(void);
  // #define Display_XY_Coorditiration 1
 //  #define TwoD_Method  1
     // #define View_initail 1
+      //  #define mpu6050_Uart 1
 #define  ThreeD_Method  1
 
 #ifdef __cplusplus

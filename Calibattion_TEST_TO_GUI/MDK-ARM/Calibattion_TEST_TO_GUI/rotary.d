@@ -44,4 +44,5 @@ calibattion_test_to_gui/rotary.o: ..\Core\Src\Rotary.c \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   ..\Core\Inc\FLASH_SECTOR_F4.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\math.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\ctype.h ..\Core\Inc\ADXL.h
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\ctype.h ..\Core\Inc\ADXL.h \
+  ..\Core\Inc\MPU6050.h

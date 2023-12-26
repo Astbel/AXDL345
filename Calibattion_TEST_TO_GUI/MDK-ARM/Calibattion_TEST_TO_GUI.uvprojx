@@ -440,6 +440,11 @@
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f4xx_hal_msp.c</FilePath>
             </File>
+            <File>
+              <FileName>MPU6050.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\MPU6050.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

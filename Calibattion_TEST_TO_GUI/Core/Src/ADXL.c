@@ -35,7 +35,7 @@ void adxl_send_data_parsing_pc(void)
 {
     /*Buffer for ringbuffer*/
     char buffer[Uart_Buffer];
-    /**/
+    /*高低8bit合成一組*/
     adxl_read(0x32);
     x = ((data_rec[1] << 8) | data_rec[0]);
     y = ((data_rec[3] << 8) | data_rec[2]);
@@ -65,10 +65,10 @@ void adxl_send_data_parsing_pc(void)
  */
 void Two_Dimensions_XY_Coorditiration(float *x, float *y, float *z)
 {
-    #ifdef Display_XY_Coorditiration
+#ifdef Display_XY_Coorditiration
     /* Uart Buffer */
     char buffer[Uart_Buffer];
-    #endif
+#endif
 
     // Calculate pitch and roll using the values pointed by x, y, and z
     float x_Vector = atan2(-(*x), sqrt((*y) * (*y) + (*z) * (*z)));
@@ -81,17 +81,17 @@ void Two_Dimensions_XY_Coorditiration(float *x, float *y, float *z)
     // Calculate xy_angle
     float xy_angle = atan2(tan(x_Degree * M_PI / 180), tan(y_Degree * M_PI / 180)) * 180 / M_PI;
 
-    #ifdef Display_XY_Coorditiration
+#ifdef Display_XY_Coorditiration
     // Use *x, *y, and xy_angle in sprintf
     sprintf(buffer, "X= %0.2f, Y= %0.2f, Ang= %0.2f", *x, *y, xy_angle);
     Uart_sendstring(buffer, pc_uart);
-    #endif 
+#endif
 
     /*PTR Function 指向並且判斷是否執行method*/
     if (Enable_Function(&xy_angle) == True)
-    {
-        /* Excute function */
-    }
+        Event_Execute();
+    else
+        Turn_OFF
 }
 
 /**
@@ -104,10 +104,10 @@ void Two_Dimensions_XY_Coorditiration(float *x, float *y, float *z)
 void Three_Dimensions_XYZ_Coorditiration(float *x, float *y, float *z)
 {
 
-    /* Uart Buffer */
-    #ifdef Display_XYZ_Coorditiration
+/* Uart Buffer */
+#ifdef Display_XYZ_Coorditiration
     char buffer[Uart_Buffer];
-    #endif
+#endif
     // char buffer[Uart_Buffer];
 
     /*三維矢量計算*/
@@ -119,18 +119,18 @@ void Three_Dimensions_XYZ_Coorditiration(float *x, float *y, float *z)
     float y_Degree = y_Vector * (180.0 / M_PI);
     float z_Degree = z_Vector * (180.0 / M_PI);
 
-    #ifdef Display_XYZ_Coorditiration
+#ifdef Display_XYZ_Coorditiration
     /*Uart 打印個個維度角度*/
     sprintf(buffer, "X_Deg= %0.2f,Y_Deg= %0.2f,Z_Deg=%0.2f", x_Degree, y_Degree, z_Degree);
     Uart_sendstring(buffer, pc_uart);
-    #endif
+#endif
     // sprintf(buffer,"Y_Degree=%0.2f",y_Degree);
     // Uart_sendstring(buffer, pc_uart);
-    
+
     if (Enable_Function(&y_Degree) == True)
-    {
         Event_Execute();
-    }
+    else
+        Turn_OFF
 }
 /**
  * @brief 判斷角度是否到達目標智能功能
@@ -143,19 +143,15 @@ uint8_t Enable_Function(float *degree)
         enable_flag = True;
     else
         enable_flag = False;
-    return enable_flag;    
+    return enable_flag;
 }
-
 
 /**
  * @brief  90度時執行事件function test
- * 
+ *
  */
 void Event_Execute(void)
 {
-    Uart_sendstring("Testing Function Angle",pc_uart);
-    
+    Uart_sendstring("Testing Function Angle", pc_uart);
+    Turn_ON
 }
-
-
-
