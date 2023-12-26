@@ -45,6 +45,7 @@ int8_t obser_result;
 /*Rotary Encoder*/
 uint8_t phaseA;
 uint8_t phaseB;
+int8_t clock_status;
 /*
  * 初始化變數變量
  * 請區分 所有結構體 為一組 以利於分辨

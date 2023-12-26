@@ -36,4 +36,10 @@ extern void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDe
 extern void Event_Execute(void);
 extern void Control_Lighting(int *duty_compare);
 extern void Print_Function(void);
+extern int8_t Status_Clock_Wise(uint32_t *rotary_encoder_phase);
+/**/
+extern int IsOverflow(int32_t value, int32_t max_limit);
+uint16_t CalculatePWMValue(int32_t initial_duty, int32_t arr, int32_t percentage, int duty_compare);
+void LimitDutyRange(void);
+
 #endif

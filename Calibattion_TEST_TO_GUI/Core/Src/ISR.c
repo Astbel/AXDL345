@@ -6,7 +6,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if (htim == &htim10)
   {
     // adxl_send_data_parsing_pc();
-   Print_Function();
+    Print_Function();
     // Rotary_Encoder(GPIOA,Rotary_CLK_Pin,GPIOA,Rotary_DT_Pin);
     //   Uart_sendstring("Test",pc_uart);
   }
@@ -37,7 +37,7 @@ void Rotary_Encoder(GPIO_TypeDef *GPIOxA, uint16_t GPIO_PinA, GPIO_TypeDef *GPIO
   Control_Lighting(&Vector_Space.modula_duty);
 
   sprintf(buffer, "Duty is %d", TIM1->CCR1);
-	Uart_sendstring(buffer, pc_uart);
+  Uart_sendstring(buffer, pc_uart);
 }
 
 void Get_Vector_Degree_Init(void)
@@ -82,14 +82,34 @@ void Get_Vector_Degree_Init(void)
  */
 void Control_Lighting(int *duty_compare)
 {
-  /*初始duty未配置*/
-  Pwm_out = ((Initail_Duty * TIM1->ARR) / MAX_DUTY_percentage) + *duty_compare;
+  static int32_t diff_wise_check = 0;
+  static uint16_t Last_PWM_value = 0;
 
-  /*限制Duty*/
-  if (Pwm_out > MAX_DUTY)
-    Pwm_out = MAX_DUTY;
-  if (Pwm_out < Min_DUTY)
-    Pwm_out = Min_DUTY;
+  clock_status = Status_Clock_Wise(duty_compare);
+
+  if ((Pwm_out == MAX_DUTY) && (clock_status == 1))
+    return;
+  else if ((Pwm_out == Min_DUTY) && ((clock_status == -1) || (clock_status == 0)))
+    return;
+  else
+  {
+    if (clock_status == 1)
+      Pwm_out = CalculatePWMValue(Initail_Duty, TIM1->ARR, MAX_DUTY_percentage, *duty_compare);
+    /*逆時針鎖最小值事件*/
+    else if (clock_status == -1)
+    {
+      diff_wise_check = Last_PWM_value + *duty_compare;
+
+      if (IsOverflow(diff_wise_check, MAX_DUTY))
+        Pwm_out = Min_DUTY;
+      else
+        Pwm_out = CalculatePWMValue(Initail_Duty, TIM1->ARR, MAX_DUTY_percentage, *duty_compare);
+    }
+
+    LimitDutyRange();
+    Last_PWM_value = Pwm_out;
+  }
+
   TIM1->CCR1 = Pwm_out;
   mointer_Duty = (float)Pwm_out / MAX_DUTY;
 }
@@ -99,10 +119,59 @@ void Print_Function(void)
 {
   char buffer[Uart_Buffer];
   int data;
-  data=TIM2->CNT;
+  data = TIM2->CNT;
   Control_Lighting(&data);
   /*計算百分比*/
   sprintf(buffer, "Duty is %0.2f", mointer_Duty);
-	Uart_sendstring(buffer, pc_uart);
-
+  // sprintf(buffer, "Duty is %d", clock_status);
+  Uart_sendstring(buffer, pc_uart);
 }
+/**
+ * @brief
+ * 確認狀態使用
+ * @param rotary_encoder_phase
+ * @return uint8_t CW CCW
+ */
+int8_t Status_Clock_Wise(uint32_t *rotary_encoder_phase)
+{
+  char buffer[Uart_Buffer];
+  static uint32_t Last_value = 0; // 静态变量用于保持上一次的值
+  static int8_t result = 0;
+  uint32_t Now_value = *rotary_encoder_phase;
+
+  // 判断顺时针还是逆时针
+  if (Now_value > Last_value)
+    result = 1; // 顺时针
+  else if (Now_value < Last_value)
+    result = -1; // 逆时针
+  else
+    result = 0;
+  // 跟新舊的值
+  Last_value = Now_value;
+  // 无变化
+  return result;
+}
+
+/*SubFuntion*/
+// Helper function to check for overflow
+int IsOverflow(int32_t value, int32_t max_limit)
+{
+  return value > max_limit;
+}
+
+// Helper function to calculate PWM value
+uint16_t CalculatePWMValue(int32_t initial_duty, int32_t arr, int32_t percentage, int duty_compare)
+{
+  return (initial_duty * arr) / percentage + duty_compare;
+}
+
+// Helper function to limit duty range
+void LimitDutyRange(void)
+{
+  if (Pwm_out > MAX_DUTY)
+    Pwm_out = MAX_DUTY;
+}
+
+
+
+

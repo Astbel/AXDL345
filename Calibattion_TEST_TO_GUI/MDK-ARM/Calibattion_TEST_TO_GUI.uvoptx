@@ -168,22 +168,17 @@
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>obser_cout</ItemText>
+          <ItemText>phaseA</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>obser_result</ItemText>
+          <ItemText>phaseB</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>phaseA</ItemText>
-        </Ww>
-        <Ww>
-          <count>6</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>phaseB</ItemText>
+          <ItemText>clock_status</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

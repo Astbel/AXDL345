@@ -104,4 +104,6 @@ extern int8_t obser_result;
 extern float degree;
 extern uint8_t phaseA;
 extern uint8_t phaseB;
+extern int8_t clock_status;
+
 #endif
