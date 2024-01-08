@@ -120,27 +120,28 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_ADC1_Init();
+  // MX_ADC1_Init();
   MX_TIM10_Init();
   MX_USART3_UART_Init();
   MX_TIM1_Init();
   MX_I2C1_Init();
   MX_USART1_UART_Init();
-  MX_SPI2_Init();
-  MX_TIM2_Init();
+  // MX_SPI2_Init();
+  // MX_TIM2_Init();
   Ringbuf_init();
-  Initail_Variable();
-  MPU6050_Init();
+  // Initail_Variable();
+  // MPU6050_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
   /* Start ISR */
-  HAL_TIM_Base_Start_IT(&htim10);
+  // HAL_TIM_Base_Start_IT(&htim10);
   /*Start PWM*/
-  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-  HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
+  // HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+  // HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  Uart_sendstring("welcome to user applcation",pc_uart);
   while (1)
   {
 #ifdef DEBUG_MODE_UART
@@ -151,7 +152,9 @@ int main(void)
     }
 #endif
     /* USER CODE END WHILE */
+    
 
+    HAL_GPIO_TogglePin(Rotary_CLK_GPIO_Port, Rotary_CLK_Pin);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
