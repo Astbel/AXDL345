@@ -22,17 +22,25 @@ Dialog DLL:      TCM.DLL V1.56.4.0
  
 <h2>Project:</h2>
 C:\Users\astbe\OneDrive\Desktop\STM32_ADXL345\Calibattion_TEST_TO_GUI\MDK-ARM\Calibattion_TEST_TO_GUI.uvprojx
-Project File Date:  01/08/2024
+Project File Date:  01/16/2024
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.19', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Calibattion_TEST_TO_GUI'
 compiling main.c...
+../Core/Src/ISR.c(92): warning: passing 'int *' to parameter of type 'uint32_t *' (aka 'unsigned int *') converts between pointers to integer types with different sign [-Wpointer-sign]
+  clock_status = Status_Clock_Wise(duty_compare);
+                                   ^~~~~~~~~~~~
+../Core/Inc/function.h(39): note: passing argument to parameter 'rotary_encoder_phase' here
+extern int8_t Status_Clock_Wise(uint32_t *rotary_encoder_phase);
+                                          ^
+1 warning generated.
+compiling ISR.c...
 linking...
-Program Size: Code=12828 RO-data=704 RW-data=12 ZI-data=2636  
+Program Size: Code=10276 RO-data=684 RW-data=12 ZI-data=2484  
 FromELF: creating hex file...
 After Build - User command #1: fromelf --bin -o Calibattion_TEST_TO_GUI.bin Calibattion_TEST_TO_GUI\Calibattion_TEST_TO_GUI.axf
-"Calibattion_TEST_TO_GUI\Calibattion_TEST_TO_GUI.axf" - 0 Error(s), 0 Warning(s).
+"Calibattion_TEST_TO_GUI\Calibattion_TEST_TO_GUI.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 

@@ -5,8 +5,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim == &htim10)
   {
+    HAL_GPIO_TogglePin(Rotary_CLK_GPIO_Port, Rotary_CLK_Pin);
     // adxl_send_data_parsing_pc();
-    Print_Function();
+    // Print_Function();
     // Rotary_Encoder(GPIOA,Rotary_CLK_Pin,GPIOA,Rotary_DT_Pin);
     //   Uart_sendstring("Test",pc_uart);
     // MPU6050_Read_Accel();

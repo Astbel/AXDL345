@@ -71,7 +71,7 @@ UART_HandleTypeDef huart3;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
-
+char buffer[Uart_Buffer];
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
@@ -123,8 +123,8 @@ int main(void)
   // MX_ADC1_Init();
   MX_TIM10_Init();
   MX_USART3_UART_Init();
-  MX_TIM1_Init();
-  MX_I2C1_Init();
+  // MX_TIM1_Init();
+  // MX_I2C1_Init();
   MX_USART1_UART_Init();
   // MX_SPI2_Init();
   // MX_TIM2_Init();
@@ -132,16 +132,16 @@ int main(void)
   // Initail_Variable();
   // MPU6050_Init();
   /* USER CODE BEGIN 2 */
-
+  int cnt = 0;
   /* USER CODE END 2 */
   /* Start ISR */
-  // HAL_TIM_Base_Start_IT(&htim10);
+  HAL_TIM_Base_Start_IT(&htim10);
   /*Start PWM*/
   // HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
   // HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  Uart_sendstring("welcome to user applcation",pc_uart);
+  Uart_sendstring("welcome to user applcation", pc_uart);
   while (1)
   {
 #ifdef DEBUG_MODE_UART
@@ -151,10 +151,13 @@ int main(void)
       Uart_write(data, pc_uart);
     }
 #endif
-    /* USER CODE END WHILE */
-    
-
-    HAL_GPIO_TogglePin(Rotary_CLK_GPIO_Port, Rotary_CLK_Pin);
+    // cnt++;
+    // if (cnt > 100)
+    //   cnt = 0;
+    // sprintf(buffer, "cnt is%d", cnt);
+    // Uart_sendstring(buffer, pc_uart);
+    // HAL_GPIO_TogglePin(Rotary_CLK_GPIO_Port, Rotary_CLK_Pin);
+    // HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -577,8 +580,9 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : PA5 Rotary_DT_Pin */
   GPIO_InitStruct.Pin = Rotary_CLK_Pin | Rotary_DT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PC8 */
